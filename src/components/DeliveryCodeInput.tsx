@@ -1,5 +1,6 @@
 // DeliveryCodeInput.tsx
 import React, { useState } from 'react';
+import DigitInputBoard from './DigitInputBoard';
 
 interface DeliveryCodeInputProps {
   onDeliveryCodeSubmit: (deliveryCode: string) => void;
@@ -7,6 +8,16 @@ interface DeliveryCodeInputProps {
 
 const DeliveryCodeInput: React.FC<DeliveryCodeInputProps> = ({ onDeliveryCodeSubmit }) => {
   const [deliveryCode, setDeliveryCode] = useState('');
+
+  const handleDigitClick = (digit: number) => {
+    if (deliveryCode.length < 4) {
+      setDeliveryCode((prevCode) => prevCode + digit.toString());
+    }
+  };
+
+  const handleClearClick = () => {
+    setDeliveryCode('');
+  };
 
   const handleSubmit = () => {
     // Validate and submit delivery code
@@ -25,9 +36,10 @@ const DeliveryCodeInput: React.FC<DeliveryCodeInputProps> = ({ onDeliveryCodeSub
       <input
         type="text"
         value={deliveryCode}
-        onChange={(e) => setDeliveryCode(e.target.value)}
+        readOnly
         placeholder="Enter Delivery Code"
       />
+      <DigitInputBoard onDigitClick={handleDigitClick} onClearClick={handleClearClick} />
       <button onClick={handleSubmit}>Submit Delivery Code</button>
     </div>
   );
