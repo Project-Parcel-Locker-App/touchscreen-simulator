@@ -1,4 +1,4 @@
-// DeliveryCodeInput.tsx
+
 import React, { useState } from 'react';
 import DigitInputBoard from './DigitInputBoard';
 
@@ -7,38 +7,41 @@ interface DeliveryCodeInputProps {
 }
 
 const DeliveryCodeInput: React.FC<DeliveryCodeInputProps> = ({ onDeliveryCodeSubmit }) => {
-  const [deliveryCode, setDeliveryCode] = useState('');
+  const [deliveryCode, setDeliveryCode] = useState<string[]>(Array(4).fill(''));
 
   const handleDigitClick = (digit: number) => {
-    if (deliveryCode.length < 4) {
-      setDeliveryCode((prevCode) => prevCode + digit.toString());
+    const updatedCode = [...deliveryCode];
+    const firstEmptyIndex = updatedCode.findIndex((value) => value === '');
+
+    if (firstEmptyIndex !== -1) {
+      updatedCode[firstEmptyIndex] = digit.toString();
+      setDeliveryCode(updatedCode);
     }
   };
 
   const handleClearClick = () => {
-    setDeliveryCode('');
+    setDeliveryCode(Array(4).fill(''));
   };
 
   const handleSubmit = () => {
     // Validate and submit delivery code
-    if (deliveryCode.length === 4) {
-      onDeliveryCodeSubmit(deliveryCode);
-      setDeliveryCode('');
+    if (deliveryCode.every((digit) => digit !== '')) {
+      onDeliveryCodeSubmit(deliveryCode.join(''));
+      setDeliveryCode(Array(4).fill(''));
     } else {
       // Handle invalid code
-      alert('Invalid Delivery Code! Please enter a 4-character code.');
+      alert('Invalid Delivery Code! Please enter a 4-digit code.');
     }
   };
 
   return (
     <div>
       <h2>Delivery Code Input</h2>
-      <input
-        type="text"
-        value={deliveryCode}
-        readOnly
-        placeholder="Enter Delivery Code"
-      />
+      <div className="code-container">
+        {deliveryCode.map((digit, index) => (
+          <span key={index} style={{ margin: '0 4px' }}>{digit || '_'}</span>
+        ))}
+      </div>
       <DigitInputBoard onDigitClick={handleDigitClick} onClearClick={handleClearClick} />
       <button onClick={handleSubmit}>Submit Delivery Code</button>
     </div>
