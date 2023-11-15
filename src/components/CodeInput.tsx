@@ -2,25 +2,25 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import DigitInputBoard from './DigitInputBoard';
 
-interface DeliveryCodeInputProps {
-  onDeliveryCodeSubmit: (deliveryCode: string) => void;
+interface CodeInputProps {
+  onCodeSubmit: (Code: string) => void;
 }
 
-const DeliveryCodeInput: React.FC<DeliveryCodeInputProps> = ({ onDeliveryCodeSubmit }) => {
-  const [deliveryCode, setDeliveryCode] = useState<string[]>(Array(4).fill(''));
+const CodeInput: React.FC<CodeInputProps> = ({ onCodeSubmit }) => {
+  const [Code, setCode] = useState<string[]>(Array(4).fill(''));
 
   const handleDigitClick = (digit: number) => {
-    const updatedCode = [...deliveryCode];
+    const updatedCode = [...Code];
     const firstEmptyIndex = updatedCode.findIndex((value) => value === '');
 
     if (firstEmptyIndex !== -1) {
       updatedCode[firstEmptyIndex] = digit.toString();
-      setDeliveryCode(updatedCode);
+      setCode(updatedCode);
     }
   };
 
   const handleClearClick = () => {
-    const lastFilledIndex = deliveryCode.reduceRight((acc, digit, index) => {
+    const lastFilledIndex = Code.reduceRight((acc, digit, index) => {
       if (acc === -1 && digit !== '') {
         return index;
       }
@@ -28,19 +28,19 @@ const DeliveryCodeInput: React.FC<DeliveryCodeInputProps> = ({ onDeliveryCodeSub
     }, -1);
 
     if (lastFilledIndex !== -1) {
-      const updatedCode = [...deliveryCode];
+      const updatedCode = [...Code];
       updatedCode[lastFilledIndex] = '';
-      setDeliveryCode(updatedCode);
+      setCode(updatedCode);
     }
   };
 
   const handleSubmit = () => {
     // Validate and submit delivery code
-    if (deliveryCode.every((digit) => digit !== '')) {
-      const code = deliveryCode.join('');
+    if (Code.every((digit) => digit !== '')) {
+      const code = Code.join('');
 
       // Send HTTP POST request
-      axios.post('http://localhost:3000/submit-delivery-code', { code })
+      axios.post('http://localhost:3000/submit-code', { code })
         .then((response) => {
           // Add necessary logic based on the backend response
           console.log('Delivery code submission successful:', response.data);
@@ -52,28 +52,28 @@ const DeliveryCodeInput: React.FC<DeliveryCodeInputProps> = ({ onDeliveryCodeSub
         });
 
       // Notify the parent component of the delivery code submission
-      onDeliveryCodeSubmit(code);
+      onCodeSubmit(code);
 
       // Clear the input
-      setDeliveryCode(Array(4).fill(''));
+      setCode(Array(4).fill(''));
     } else {
       // Handle invalid code
-      alert('Invalid Delivery Code! Please enter a 4-digit code.');
+      alert('Invalid Code! Please enter a 4-digit code.');
     }
   };
 
   return (
     <div>
-      <h2>Delivery Code Input</h2>
+      <h2>Code Input</h2>
       <div className="code-container">
-        {deliveryCode.map((digit, index) => (
+        {Code.map((digit, index) => (
           <span key={index} style={{ margin: '0 4px' }}>{digit || '_'}</span>
         ))}
       </div>
       <DigitInputBoard onDigitClick={handleDigitClick} onClearClick={handleClearClick} />
-      <button onClick={handleSubmit}>Submit Delivery Code</button>
+      <button onClick={handleSubmit}>Submit Code</button>
     </div>
   );
 };
 
-export default DeliveryCodeInput;
+export default CodeInput;

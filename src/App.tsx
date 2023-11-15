@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import ParcelLockerSelector from './components/ParcelLockerSelector.tsx';
 import PickupDoor from './components/PickupDoor.tsx';
 import DeliveryDoor from './components/DeliveryDoor.tsx';
-import DeliveryCodeInput from './components/DeliveryCodeInput.tsx';
+import CodeInput from './components/CodeInput.tsx';
 import './App.css';
 
 function App() {
@@ -26,13 +26,13 @@ function App() {
   };
 
   // Temporary code, use the commented-out section below in practice
-  const handleDeliveryCodeSubmit = (deliveryCode: string) => {
+  const handleCodeSubmit = (Code: string) => {
     // Check for the receive code (using '1234' as a placeholder)
-    if (deliveryCode === '1234') {
+    if (Code === '1234') {
       setAction('receive');
     }
     // Check for the send code (using '5678' as a placeholder)
-    else if (deliveryCode === '5678') {
+    else if (Code === '5678') {
       setAction('send');
     } else {
       // Handle the case of an invalid code
@@ -41,13 +41,13 @@ function App() {
   };
 
   /* 
-  const handleDeliveryCodeSubmit = (deliveryCode: string) => {
+  const handleCodeSubmit = (Code: string) => {
     // Check for the send code
-    if (deliveryCode === 'send') {
+    if (Code === 'send') {
       setAction('send');
     }
     // Check for the receive code
-    else if (deliveryCode === 'receive') {
+    else if (Code === 'receive') {
       setAction('receive');
     } else {
       // Handle the case of an invalid code
@@ -66,7 +66,7 @@ function App() {
       {selectedLocker !== null && (
         <>
           {action === null && (
-            <DeliveryCodeInput onDeliveryCodeSubmit={handleDeliveryCodeSubmit} />
+            <CodeInput onCodeSubmit={handleCodeSubmit} />
           )}
           {action === 'send' && (
             <PickupDoor onPickupDoorClose={handlePickupDoorClose} />
