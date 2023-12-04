@@ -5,11 +5,11 @@ interface CabinetDisplayProps {
 }
 
 const CabinetDisplay: React.FC<CabinetDisplayProps> = ({ cabinetNumber }) => {
-  const renderColumn = (start: number, end: number) => {
+  const renderRow = (start: number, end: number) => {
     const boxes = Array.from({ length: end - start + 1 }, (_, index) => start + index);
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '8px' }}>
+      <div style={{ display: 'flex' }}>
         {boxes.map((number) => (
           <div
             key={number}
@@ -19,7 +19,7 @@ const CabinetDisplay: React.FC<CabinetDisplayProps> = ({ cabinetNumber }) => {
               border: '1px solid black',
               textAlign: 'center',
               backgroundColor: number.toString() === cabinetNumber ? 'lightblue' : 'white',
-              marginBottom: '8px', 
+              margin: '8px',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
@@ -33,11 +33,10 @@ const CabinetDisplay: React.FC<CabinetDisplayProps> = ({ cabinetNumber }) => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', width: '400px' }}>
-      {renderColumn(1, 4)}
-      {renderColumn(5, 8)}
-      {renderColumn(9, 12)}
-      {renderColumn(13, 15)}
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '400px' }}>
+      {renderRow(1, 5)}
+      {renderRow(6, 10)}
+      {renderRow(11, 15)}
     </div>
   );
 };
