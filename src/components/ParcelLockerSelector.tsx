@@ -1,37 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 
 interface ParcelLockerSelectorProps {
   onSelectLocker: (lockerNumber: number) => void;
 }
 
+const LockerButton = styled.button`
+  margin: 10px;  // ボタンの間隔を調整する値
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;  // マウスオーバー時の色の変化をアニメーション化
+  &:hover {
+    background-color: #870939;  
+    color: #fff;  
+  }
+`;
+
 const ParcelLockerSelector: React.FC<ParcelLockerSelectorProps> = ({ onSelectLocker }) => {
   const [lockers, setLockers] = useState<number[]>([]);
 
-  // Fetch the list of locker numbers from the backend
   useEffect(() => {
-    // axios.get('http://localhost:3000/lockers')  // Commented out for now as the backend is incomplete
-    //   .then((response) => setLockers(response.data))
-    //   .catch((error) => console.error('Error fetching lockers:', error));
-    // Set fake locker numbers for now
-    const fakeLockers = [101, 102, 103, 104, 105];
+    const fakeLockers = [1, 2, 3, 4, 5];
     setLockers(fakeLockers);
   }, []);
 
   const handleLockerSelection = (lockerNumber: number) => {
-    // Send the selected locker information to the backend
-    axios.post('http://localhost:3000/select-locker', { lockerNumber })  // Specify the actual endpoint here
+    axios.post('http://localhost:3000/select-locker', { lockerNumber })
       .then((response) => {
-        // Add necessary processing based on the backend response
         console.log('Locker selection successful:', response.data);
-        // Add additional processing here if needed
       })
       .catch((error) => {
         console.error('Error selecting locker:', error);
-        // Add error handling here if necessary
       });
 
-    // Notify the parent component of the locker selection
     onSelectLocker(lockerNumber);
   };
 
@@ -39,9 +41,9 @@ const ParcelLockerSelector: React.FC<ParcelLockerSelectorProps> = ({ onSelectLoc
     <div>
       <p>Select parcel locker for simulation</p>
       {lockers.map((lockerNumber) => (
-        <button key={lockerNumber} onClick={() => handleLockerSelection(lockerNumber)}>
-          Parcel Locker {lockerNumber}
-        </button>
+        <LockerButton key={lockerNumber} onClick={() => handleLockerSelection(lockerNumber)}>
+          Locker {lockerNumber}
+        </LockerButton>
       ))}
     </div>
   );
