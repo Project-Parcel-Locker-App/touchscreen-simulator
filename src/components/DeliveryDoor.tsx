@@ -5,6 +5,7 @@ import axios from 'axios';
 interface DeliveryDoorProps {
   onDeliveryDoorClose: () => void;
   deliveryCode: string;
+
 }
 
 
