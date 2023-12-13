@@ -6,7 +6,10 @@ import DeliveryDoor from './components/DeliveryDoor.tsx';
 import CodeInput from './components/CodeInput.tsx';
 import './App.css';
 
+
+
 function App() {
+  
   const [selectedLocker, setSelectedLocker] = useState<number | null>(null);
   const [action, setAction] = useState<'send' | 'receive' | null>(null);
 
@@ -25,36 +28,15 @@ function App() {
     setAction(null); // Clear the action when the delivery door is closed
   };
 
-  // Temporary code, use the commented-out section below in practice
-  const handleCodeSubmit = (Code: string) => {
-    // Check for the receive code (using '1234' as a placeholder)
-    if (Code === '1234') {
+  const handleCodeSubmit = (code: string) => {
+    if (code === '1234') {
       setAction('receive');
-    }
-    // Check for the send code (using '5678' as a placeholder)
-    else if (Code === '5678') {
+    } else if (code === '5678') {
       setAction('send');
     } else {
-      // Handle the case of an invalid code
       alert('Invalid Action Code! Please enter "1234" for receive or "5678" for send.');
     }
   };
-
-  /* 
-  const handleCodeSubmit = (Code: string) => {
-    // Check for the send code
-    if (Code === 'send') {
-      setAction('send');
-    }
-    // Check for the receive code
-    else if (Code === 'receive') {
-      setAction('receive');
-    } else {
-      // Handle the case of an invalid code
-      alert('Invalid Action Code! Please enter "send" or "receive".');
-    }
-  };
-  */
 
   return (
     <>
@@ -69,11 +51,18 @@ function App() {
             <CodeInput onCodeSubmit={handleCodeSubmit} />
           )}
           {action === 'send' && (
-            <PickupDoor onPickupDoorClose={handlePickupDoorClose} />
+            <PickupDoor
+              pickupCode="your_pickup_code"  // 実際のピックアップコードを追加
+              correctLockerNumber={2683}      // 実際の正しいロッカーナンバーを追加
+              onPickupDoorClose={handlePickupDoorClose}
+            />
           )}
           {action === 'receive' && (
-            <DeliveryDoor onDeliveryDoorClose={handleDeliveryDoorClose} />
-          )}
+            <DeliveryDoor
+              deliveryCode="your_delivery_code"  // 実際のデリバリーコードを追加
+              onDeliveryDoorClose={handleDeliveryDoorClose}
+            />
+)}
         </>
       )}
     </>
